@@ -7,1175 +7,1178 @@ import os
 answer_arr = []
 
 def restart_program():
-   os.execl(sys.executable, sys.executable, *sys.argv)
+    os.execl(sys.executable, sys.executable, *sys.argv)
 def add_list(value):
-   global answer_arr
-   answer_arr.append(value)
+    global answer_arr
+    answer_arr.append(value)
 
-#------------------------Underlying Window for the entire game----------------------------
+#------------------------Underlying Window for the entire game----------------------------(Udit)
 
 class Rootwindow(tk.Tk):
-   def __init__(self):
-       tk.Tk.__init__(self)
+    def __init__(self):
+        tk.Tk.__init__(self)
 
-       #Holds all the frames of the program
-       container = tk.Frame(self)
-       container.pack(side="top", fill="both", expand=True)
-       container.grid_rowconfigure(0, weight=1)
-       container.grid_columnconfigure(0, weight=1)
+        #Holds all the frames of the program
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-       self.frames = {}
-       for F in (start_screen,Q1_screen, Q2_screen, Q3_screen, Q4_screen, Q5_screen
-                 , Q6_screen, Q7_screen, Q8_screen, Q9_screen, Q10_screen,
-                 win_screen, lose_screen, inst_screen):
-       
-           page_name = F.__name__
-           frame = F(parent=container, controller=self)
-           self.frames[page_name] = frame
-           frame.grid(row = 0, column = 0, sticky="nsew")
+        self.frames = {}
+        for F in (start_screen,Q1_screen, Q2_screen, Q3_screen, Q4_screen, Q5_screen
+                  , Q6_screen, Q7_screen, Q8_screen, Q9_screen, Q10_screen,
+                  win_screen, lose_screen, inst_screen):
 
-       self.show_frame("start_screen")
+            page_name = F.__name__
+            frame = F(parent=container, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row = 0, column = 0, sticky="nsew")
+
+        self.show_frame("start_screen")
 
 
-   def show_frame(self, page_name):
-       '''Brings the specified frame to the top'''
-       frame = self.frames[page_name]
-       frame.tkraise()
+    def show_frame(self, page_name):
+        '''Brings the specified frame to the top'''
+        frame = self.frames[page_name]
+        frame.tkraise()
 
-#------------------------------Opening Screen---------------------------
+#------------------------------Opening Screen--------------------------- (Harjap)
 
 
 class start_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       title = tk.Label(self, text = "WHO WANTS TO BECOME A MILLIONAIRE",
-                        font = ("Comic Sans", 20), width = 35, height = 2)
-       title.place(x = 100, y = 40)
+        title = tk.Label(self, text = "WHO WANTS TO BECOME A MILLIONAIRE",
+                         font = ("Comic Sans", 20), width = 35, height = 2)
+        title.place(x = 100, y = 40)
 
-       play_button = tk.Button(self, text = "Play", bg = "#383a39", width = 15,
-                                fg = "white", command = lambda: controller.show_frame("Q1_screen"))
-       play_button.place(x = 320, y = 400)
+        play_button = tk.Button(self, text = "Play", bg = "#383a39", width = 15,
+                                 fg = "white", command = lambda: controller.show_frame("Q1_screen"))
+        play_button.place(x = 320, y = 400)
 
-       inst_label = tk.Button(self, text = "Instructions", bg = "#383a39", width = 20,
-                              fg = "white", command = lambda: controller.show_frame("inst_screen"))
-       inst_label.place(x = 300, y = 450)
+        inst_label = tk.Button(self, text = "Instructions", bg = "#383a39", width = 20,
+                               fg = "white", command = lambda: controller.show_frame("inst_screen"))
+        inst_label.place(x = 300, y = 450)
 
 
-#--------------------------Instructions Screen-----------------------------
+#--------------------------Instructions Screen----------------------------- (Harjap)
 
 class inst_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       title = tk.Label(self, text = "INSTRUCTIONS",
-                        font = ("Comic Sans", 20), width = 35, height = 2)
-       title.place(x = 110, y = 40)
+        title = tk.Label(self, text = "INSTRUCTIONS",
+                         font = ("Comic Sans", 20), width = 35, height = 2)
+        title.place(x = 110, y = 40)
 
-       instructions = tk.Label(self, text = "", width = 25)
+        instructions = tk.Label(self, text = "Use your mouse to click on one of the 4 answers.\n Choosing the incorrect answer will cause you to lose and your score will be nothing.\n Choosing the correct answer will allow you to add the \n money from that round to your total winnings and you will continue to the next question.\n The goal is to win $1 000 000!!!\n Have fun! Click “CONTINUE” to continue to game",
+                                width = 100, height = 10)
+        instructions.place(x = 50, y = 200)
 
-       back_button = tk.Button(self, text = "RETURN", width = 20, bg = "#383a39",
-                               fg = "white", command = lambda: controller.show_frame("start_screen"))
-       back_button.place(x = 320, y = 450)
+        back_button = tk.Button(self, text = "RETURN", width = 20, bg = "#383a39",
+                                fg = "white", command = lambda: controller.show_frame("start_screen"))
+        back_button.place(x = 320, y = 450)
 
-#---------------------------------------------------------------------------
+#----------------------------------Lose Screen--------------------------------- (Tawfee)
 
 class lose_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       label = tk.Label(self, text = "YOU LOSE", font = ("Comic Sans", 40), height = 5, width = 50)
-       label.pack()
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        label = tk.Label(self, text = "YOU LOSE", font = ("Comic Sans", 40), height = 5, width = 50)
+        label.pack()
 
-       restart_button1 = tk.Button(self, text = "Try Again", width = 20, bg = "#383a39",
-                                fg = "white", command = restart_program)
-       restart_button1.place(x = 320, y = 450)
-       
-#--------------------------------------------------------------------------
+        restart_button1 = tk.Button(self, text = "Try Again", width = 20, bg = "#383a39",
+                                 fg = "white", command = restart_program)
+        restart_button1.place(x = 320, y = 450)
+
+#-----------------------------------Win Screen--------------------------------------- (Tawfee)
 class win_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       label = tk.Label(self, text = "CONGRATULATIONS\n YOU WIN\n\n $1,000,000", font = ("Comic Sans", 40),
-                        height = 5, width = 50)
-       label.pack()
+        label = tk.Label(self, text = "CONGRATULATIONS\n YOU WIN\n\n $1,000,000", font = ("Comic Sans", 40),
+                         height = 5, width = 50)
+        label.pack()
 
-       restart_button1 = tk.Button(self, text = "Play Again", width = 20, bg = "#383a39",
-                                fg = "white", command = restart_program)
-       restart_button1.place(x = 320, y = 450)
+        restart_button1 = tk.Button(self, text = "Play Again", width = 20, bg = "#383a39",
+                                 fg = "white", command = restart_program)
+        restart_button1.place(x = 320, y = 450)
 
-#-------------------------------Question screens-----------------------------
+#-------------------------------Question screens-----------------------------Udit
 
 
 class Q1_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller  
-       
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       i = random.randint(-1, (file_len("Questions.txt")-1))
-       add_list(i)
-       
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        i = random.randint(-1, (file_len("Questions.txt")-1))
+        add_list(i)
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q2_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q2_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q2_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q2_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[i]
+            question_string = content
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-#---------------------------Earnings----------------------------------------
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+#---------------------------------Randomize buttons----------------------------------- Andrew
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q2_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q2_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q2_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q2_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
 
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "blue")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "blue")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "blue")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "yellow")
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-       
+#---------------------------Earnings---------------------------------------- Andrew
 
-   
- 
+
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "blue")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "blue")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "blue")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "yellow")
+
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+
+
+
 #--------------------------------------------------------------------------
 class Q2_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[a]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q3_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q3_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q3_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q3_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[a]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q3_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q3_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q3_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q3_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 
 #---------------------------Earnings----------------------------------------
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "blue")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "blue")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "yellow")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "blue")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "blue")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "yellow")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-       
-      
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+
 #--------------------------------------------------------------------------
 class Q3_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[a]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q4_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q4_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q4_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q4_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[a]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q4_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q4_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q4_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q4_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 #---------------------------Earnings----------------------------------------
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "blue")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "yellow")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "blue")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "yellow")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-       
-#--------------------------------------------------------------------------        
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+#--------------------------------------------------------------------------
 class Q4_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q5_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q5_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q5_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q5_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
 
-#---------------------------Earnings----------------------------------------            
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "yellow")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+            arr = [0,1,2,3]
+            random.shuffle(arr)
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-                   
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q5_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q5_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q5_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q5_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
+
+#---------------------------Earnings----------------------------------------
+
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "blue")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "yellow")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
 #--------------------------------------------------------------------------
 class Q5_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q6_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q6_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q6_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q6_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
 
-#---------------------------Earnings----------------------------------------            
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "yellow")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+            arr = [0,1,2,3]
+            random.shuffle(arr)
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-                   
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q6_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q6_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q6_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q6_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
+
+#---------------------------Earnings----------------------------------------
+
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "blue")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "yellow")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
 #--------------------------------------------------------------------------
 
 class Q6_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q7_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q7_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q7_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q7_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q7_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q7_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q7_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q7_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 #---------------------------Earnings----------------------------------------
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "yellow")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "blue")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "yellow")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-                   
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
 #--------------------------------------------------------------------------
 
 class Q7_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q8_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q8_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q8_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q8_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q8_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q8_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q8_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q8_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 #---------------------------Earnings----------------------------------------
 
-           
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "yellow")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-       
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "blue")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "yellow")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-           
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+
+
 #--------------------------------------------------------------------------
 
 class Q8_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q9_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q9_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q9_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q9_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q9_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q9_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q9_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q9_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 #---------------------------Earnings----------------------------------------
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "yellow")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "grey")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "blue")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "yellow")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "grey")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-       
-           
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+
 #--------------------------------------------------------------------------
 
 class Q9_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-    
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q10_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q10_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q10_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("Q10_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
+
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q10_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q10_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q10_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("Q10_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 #---------------------------Earnings----------------------------------------
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "yellow")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "grey")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "grey")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "blue")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "yellow")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "grey")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "grey")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-       
-           
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+
 #--------------------------------------------------------------------------
 
 class Q10_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       def file_len(fname):
-           with open(fname) as f:
-               for count, l in enumerate(f):
-                   pass
-           return count + 1
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        def file_len(fname):
+            with open(fname) as f:
+                for count, l in enumerate(f):
+                    pass
+            return count + 1
 
-       while True:
-           i = random.randint(-1, (file_len("Questions.txt")-1))
-           if i in answer_arr:
-               continue
-           else:
-               add_list(i)
-               break
-       a = i
-           
-       with open("Questions.txt", "r") as f:
-           content = f.readlines()[a]
-           question_string = content
-           
-       question_label = tk.Label(self, text = question_string, width = 80, height = 10)
-       question_label.place(x = 20, y = 200)
+        while True:
+            i = random.randint(-1, (file_len("Questions.txt")-1))
+            if i in answer_arr:
+                continue
+            else:
+                add_list(i)
+                break
+        a = i
 
-       with open ("Answers.txt", "r") as r:
-           file_len("Answers.txt")
-           line = r.readlines()[i]
-           answer_1 = [word.strip() for word in line.split(',')]
-           print(answer_1)
+        with open("Questions.txt", "r") as f:
+            content = f.readlines()[a]
+            question_string = content
 
-           
-           arr = [0,1,2,3]
-           random.shuffle(arr)
-           
-           answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
-           answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
-           answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
-           answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
-           
-           if answer1['text'] == answer_1[0]:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("win_screen"))
-           else:
-               answer1 = tk.Button(self, text = answer_1[arr[0]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer2['text'] == answer_1[0]:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("win_screen"))
-           else:
-               answer2 = tk.Button(self, text = answer_1[arr[1]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))                
-           if answer3['text'] == answer_1[0]:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("win_screen"))
-           else:
-               answer3 = tk.Button(self, text = answer_1[arr[2]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
-           if answer4['text'] == answer_1[0]:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("win_screen"))
-           else:
-               answer4 = tk.Button(self, text = answer_1[arr[3]],
-                                   width = 30, height = 3, fg = "black",
-                                   command = lambda: controller.show_frame("lose_screen"))
+        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
+        question_label.place(x = 20, y = 200)
 
-               
-           answer1.place(x = 40, y = 340)
-           answer2.place(x = 40, y = 450)            
-           answer3.place(x = 330, y = 340)
-           answer4.place(x = 330, y = 450)
+        with open ("Answers.txt", "r") as r:
+            file_len("Answers.txt")
+            line = r.readlines()[i]
+            answer_1 = [word.strip() for word in line.split(',')]
+            print(answer_1)
+
+
+            arr = [0,1,2,3]
+            random.shuffle(arr)
+
+            answer1 = tk.Button(self, text = answer_1[arr[0]], width = 30, height = 3, fg = "black")
+            answer2 = tk.Button(self, text = answer_1[arr[1]], width = 30,height = 3, fg = "black")
+            answer3 = tk.Button(self, text = answer_1[arr[2]], width = 30, height = 3, fg = "black")
+            answer4 = tk.Button(self, text = answer_1[arr[3]], width = 30, height = 3, fg = "black")
+
+            if answer1['text'] == answer_1[0]:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("win_screen"))
+            else:
+                answer1 = tk.Button(self, text = answer_1[arr[0]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer2['text'] == answer_1[0]:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("win_screen"))
+            else:
+                answer2 = tk.Button(self, text = answer_1[arr[1]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer3['text'] == answer_1[0]:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("win_screen"))
+            else:
+                answer3 = tk.Button(self, text = answer_1[arr[2]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+            if answer4['text'] == answer_1[0]:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("win_screen"))
+            else:
+                answer4 = tk.Button(self, text = answer_1[arr[3]],
+                                    width = 30, height = 3, fg = "black",
+                                    command = lambda: controller.show_frame("lose_screen"))
+
+
+            answer1.place(x = 40, y = 340)
+            answer2.place(x = 40, y = 450)
+            answer3.place(x = 330, y = 340)
+            answer4.place(x = 330, y = 450)
 
 #---------------------------Earnings----------------------------------------
 
-       label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "yellow")
-       label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "grey")
-       label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "grey")
-       label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "grey")
-       label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
-       label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
-       label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
-       label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
-       label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
-       label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
+        label1 = tk.Label(self, text = "$1,000,000", width = 25, height = 2,  bg = "yellow")
+        label2 = tk.Label(self, text = "$750,000", width = 25, height = 2, bg = "grey")
+        label3 = tk.Label(self, text = "$500,000", width = 25, height = 2, bg = "grey")
+        label4 = tk.Label(self, text = "$250,000", width = 25, height = 2, bg = "grey")
+        label5 = tk.Label(self, text = "$100,000", width = 25, height = 2, bg = "grey")
+        label6 = tk.Label(self, text = "$20,000", width = 25, height = 2, bg = "grey")
+        label7 = tk.Label(self, text = "$5000", width = 25, height = 2, bg = "grey")
+        label8 = tk.Label(self, text = "$1000", width = 25, height = 2, bg = "grey")
+        label9 = tk.Label(self, text = "$500", width = 25, height = 2, bg = "grey")
+        label10 = tk.Label(self, text = "$100", width = 25, height = 2, bg = "grey")
 
-       label1.place(x = 600, y = 50)
-       label2.place(x = 600, y = 85)
-       label3.place(x = 600, y = 120)
-       label4.place(x = 600, y = 155)
-       label5.place(x = 600, y = 190)
-       label6.place(x = 600, y = 225)
-       label7.place(x = 600, y = 260)
-       label8.place(x = 600, y = 295)
-       label9.place(x = 600, y = 330)
-       label10.place(x = 600, y = 365)
-                   
-           
+        label1.place(x = 600, y = 50)
+        label2.place(x = 600, y = 85)
+        label3.place(x = 600, y = 120)
+        label4.place(x = 600, y = 155)
+        label5.place(x = 600, y = 190)
+        label6.place(x = 600, y = 225)
+        label7.place(x = 600, y = 260)
+        label8.place(x = 600, y = 295)
+        label9.place(x = 600, y = 330)
+        label10.place(x = 600, y = 365)
+
+
 #--------------------------------------------------------------------------
-     
+
 
 root = Rootwindow()
 
@@ -1185,5 +1188,3 @@ root.geometry("800x550")
 
 root.configure(background = "#a1dbcd")
 root.mainloop()
-
-print(answer_arr)
