@@ -3,6 +3,14 @@ from tkinter import *
 import tkinter.messagebox as tm
 import sys
 import random
+import os
+answer_arr = []
+
+def restart_program():
+   os.execl(sys.executable, sys.executable, *sys.argv)
+def add_list(value):
+   global answer_arr
+   answer_arr.append(value)
 
 #------------------------Underlying Window for the entire game----------------------------
 
@@ -18,7 +26,8 @@ class Rootwindow(tk.Tk):
 
        self.frames = {}
        for F in (start_screen,Q1_screen, Q2_screen, Q3_screen, Q4_screen, Q5_screen
-                 , Q6_screen, Q7_screen, Q8_screen, Q9_screen, Q10_screen, win_screen, lose_screen):
+                 , Q6_screen, Q7_screen, Q8_screen, Q9_screen, Q10_screen,
+                 win_screen, lose_screen, inst_screen):
        
            page_name = F.__name__
            frame = F(parent=container, controller=self)
@@ -26,6 +35,7 @@ class Rootwindow(tk.Tk):
            frame.grid(row = 0, column = 0, sticky="nsew")
 
        self.show_frame("start_screen")
+
 
    def show_frame(self, page_name):
        '''Brings the specified frame to the top'''
@@ -42,15 +52,60 @@ class start_screen(tk.Frame):
 
        title = tk.Label(self, text = "WHO WANTS TO BECOME A MILLIONAIRE",
                         font = ("Comic Sans", 20), width = 35, height = 2)
-       title.place(x = 20, y = 40)
+       title.place(x = 100, y = 40)
 
-       login_button = tk.Button(self, text = "Play", bg = "#383a39", width = 15,
+       play_button = tk.Button(self, text = "Play", bg = "#383a39", width = 15,
                                 fg = "white", command = lambda: controller.show_frame("Q1_screen"))
-       login_button.place(x = 232, y = 400)
+       play_button.place(x = 320, y = 400)
+
+       inst_label = tk.Button(self, text = "Instructions", bg = "#383a39", width = 20,
+                              fg = "white", command = lambda: controller.show_frame("inst_screen"))
+       inst_label.place(x = 300, y = 450)
 
 
+#--------------------------Instructions Screen-----------------------------
+
+class inst_screen(tk.Frame):
+   def __init__(self, parent, controller):
+       tk.Frame.__init__(self, parent)
+       self.controller = controller
+
+       title = tk.Label(self, text = "INSTRUCTIONS",
+                        font = ("Comic Sans", 20), width = 35, height = 2)
+       title.place(x = 110, y = 40)
+
+       instructions = tk.Label(self, text = "", width = 25)
+
+       back_button = tk.Button(self, text = "RETURN", width = 20, bg = "#383a39",
+                               fg = "white", command = lambda: controller.show_frame("start_screen"))
+       back_button.place(x = 320, y = 450)
+
+#---------------------------------------------------------------------------
+
+class lose_screen(tk.Frame):
+   def __init__(self, parent, controller):
+       tk.Frame.__init__(self, parent)
+       self.controller = controller
+       label = tk.Label(self, text = "YOU LOSE", font = ("Comic Sans", 40), height = 5, width = 50)
+       label.pack()
+
+       restart_button1 = tk.Button(self, text = "Try Again", width = 20, bg = "#383a39",
+                                fg = "white", command = restart_program)
+       restart_button1.place(x = 320, y = 450)
        
+#--------------------------------------------------------------------------
+class win_screen(tk.Frame):
+   def __init__(self, parent, controller):
+       tk.Frame.__init__(self, parent)
+       self.controller = controller
 
+       label = tk.Label(self, text = "CONGRATULATIONS\n YOU WIN\n\n $1,000,000", font = ("Comic Sans", 40),
+                        height = 5, width = 50)
+       label.pack()
+
+       restart_button1 = tk.Button(self, text = "Play Again", width = 20, bg = "#383a39",
+                                fg = "white", command = restart_program)
+       restart_button1.place(x = 320, y = 450)
 
 #-------------------------------Question screens-----------------------------
 
@@ -58,7 +113,7 @@ class start_screen(tk.Frame):
 class Q1_screen(tk.Frame):
    def __init__(self, parent, controller):
        tk.Frame.__init__(self, parent)
-       self.controller = controller
+       self.controller = controller  
        
        def file_len(fname):
            with open(fname) as f:
@@ -66,7 +121,9 @@ class Q1_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       i = random.randint(-1, (file_len("Questions.txt")-1))
+       add_list(i)
+       
        with open("Questions.txt", "r") as f:
            content = f.readlines()[i]
            question_string = content
@@ -168,9 +225,17 @@ class Q2_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -178,7 +243,7 @@ class Q2_screen(tk.Frame):
 
        with open ("Answers.txt", "r") as r:
            file_len("Answers.txt")
-           line = r.readlines()[i]
+           line = r.readlines()[a]
            answer_1 = [word.strip() for word in line.split(',')]
            print(answer_1)
 
@@ -267,9 +332,17 @@ class Q3_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -277,7 +350,7 @@ class Q3_screen(tk.Frame):
 
        with open ("Answers.txt", "r") as r:
            file_len("Answers.txt")
-           line = r.readlines()[i]
+           line = r.readlines()[a]
            answer_1 = [word.strip() for word in line.split(',')]
            print(answer_1)
 
@@ -364,9 +437,17 @@ class Q4_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -461,9 +542,17 @@ class Q5_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -559,9 +648,17 @@ class Q6_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -657,9 +754,17 @@ class Q7_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -759,9 +864,17 @@ class Q8_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -859,9 +972,17 @@ class Q9_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -958,9 +1079,17 @@ class Q10_screen(tk.Frame):
                    pass
            return count + 1
 
-       i = random.randint(0, (file_len("Questions.txt")))
+       while True:
+           i = random.randint(-1, (file_len("Questions.txt")-1))
+           if i in answer_arr:
+               continue
+           else:
+               add_list(i)
+               break
+       a = i
+           
        with open("Questions.txt", "r") as f:
-           content = f.readlines()[i]
+           content = f.readlines()[a]
            question_string = content
            
        question_label = tk.Label(self, text = question_string, width = 80, height = 10)
@@ -1046,22 +1175,7 @@ class Q10_screen(tk.Frame):
                    
            
 #--------------------------------------------------------------------------
-class lose_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       label = tk.Label(self, text = "YOU LOSE NIGGA", height = 5, width = 50)
-       label.pack()
-#--------------------------------------------------------------------------
-class win_screen(tk.Frame):
-   def __init__(self, parent, controller):
-       tk.Frame.__init__(self, parent)
-       self.controller = controller
-       label = tk.Label(self, text = "GANG SHIT NIGGA, YOU WIN", height = 5, width = 50)
-       label.pack()
-#---------------------------------------------------------------------------
-
-       
+     
 
 root = Rootwindow()
 
@@ -1071,3 +1185,5 @@ root.geometry("800x550")
 
 root.configure(background = "#a1dbcd")
 root.mainloop()
+
+print(answer_arr)
